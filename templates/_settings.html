@@ -1,0 +1,13 @@
+{% import "_includes/forms" as forms %}
+
+{{ forms.textField({
+	label: "Next Number"|t,
+	id: 'increment',
+	name: 'increment',
+	instructions: "Insert the number you want to use for the next incremented value. The number can must be higher than the highest incremented value or Increment will base its next number off of existing highest number."|t,
+	value: settings.increment,
+	autofocus: true,
+	first: true,
+	size: 5,
+	errors: settings.getErrors('increment')
+}) }}
