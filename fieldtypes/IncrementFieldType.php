@@ -1,73 +1,69 @@
-<?php   
+<?php
 namespace Craft;
 
 class IncrementFieldType extends BaseFieldType
 {
-	
-	// Increment name
-	public function getName()
-	{
-		return Craft::t('Increment');
-	}
 
-	// Define field as number
-	public function defineContentAttribute()
-	{
-		return AttributeType::Number;
-	}
+    // Increment name
+    public function getName()
+    {
+        return Craft::t('Increment');
+    }
 
-	// Settings
-	protected function defineSettings()
-	{
-		return array(
-			'increment' => AttributeType::Number,
-		);
-	}
+    // Define field as number
+    public function defineContentAttribute()
+    {
+        return AttributeType::Number;
+    }
 
-	// Set settings html
-	public function getSettingsHtml()
-	{
-		return craft()->templates->render('increment/_settings', array(
-			'settings' => $this->getSettings()
-		));
-	}
+    // Settings
+    protected function defineSettings()
+    {
+        return array(
+            'increment' => AttributeType::Number,
+        );
+    }
 
-	// Prep value for output
-	public function prepValue($value)
-	{
+    // Set settings html
+    public function getSettingsHtml()
+    {
+        return craft()->templates->render('increment/_settings', array(
+            'settings' => $this->getSettings(),
+        ));
+    }
 
-		// If value is not yet set
-		if(!isset($value)) {
+    // Prep value for output
+    public function prepValue($value)
+    {
 
-			// Get current field handle
-			$handle = $this->model->handle;
-			
-			// Get current max number
-			$max = craft()->db->createCommand()->select('MAX(`field_' . $handle . '`)')->from('content')->queryScalar();
+        // If value is not yet set
+        if (!isset($value)) {
 
-			// Get increment number
-			$increment = $this->getSettings()->increment;
+            // Get current field handle
+            $handle = $this->model->handle;
 
-			// Determine next number
-			$value = $increment > $max ? $increment : ($max+1);
-			
-		}
+            // Get current max number
+            $max = craft()->db->createCommand()->select('MAX(`field_'.$handle.'`)')->from('content')->queryScalar();
 
-		// Return this value
-		return $value;
+            // Get increment number
+            $increment = $this->getSettings()->increment;
 
-	}
+            // Determine next number
+            $value = $increment > $max ? $increment : ($max+1);
+        }
 
-	// Set input html
-	public function getInputHtml($name, $value)
-	{
-		
-		// Return html
-		return craft()->templates->render('increment/_input', array(
-			'name'  => $name,
-			'value' => $value
-		));
+        // Return this value
+        return $value;
+    }
 
-	}
+    // Set input html
+    public function getInputHtml($name, $value)
+    {
 
+        // Return html
+        return craft()->templates->render('increment/_input', array(
+            'name'  => $name,
+            'value' => $value,
+        ));
+    }
 }
