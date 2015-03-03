@@ -27,7 +27,7 @@ class IncrementPlugin extends BasePlugin
     public function init()
     {
         // check increment fields to make sure no duplicate values are inserted
-        craft()->on('entries.beforeSaveEntry', function(Event $event) use ($outer) {
+        craft()->on('entries.beforeSaveEntry', function(Event $event) {
             $isNewEntry = $event->params['isNewEntry'];
             $entry = $event->params['entry'];
 
