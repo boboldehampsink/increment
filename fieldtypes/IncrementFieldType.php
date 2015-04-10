@@ -45,6 +45,7 @@ class IncrementFieldType extends BaseFieldType
         return array(
             'prefix'    => AttributeType::String,
             'increment' => AttributeType::Number,
+            'padding'   => AttributeType::Number,
         );
     }
 
@@ -108,6 +109,9 @@ class IncrementFieldType extends BaseFieldType
             // Get current max number
             $value = $this->_getMaxNumber($settings->increment);
         }
+
+        // Pad zeroes
+        $value = str_pad($value, $settings->padding, '0', STR_PAD_LEFT);
 
         // Add prefix
         $value = craft()->templates->renderObjectTemplate($settings->prefix, $this->element).$value;

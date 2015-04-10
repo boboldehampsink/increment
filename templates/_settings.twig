@@ -20,3 +20,13 @@
 	size: 5,
 	errors: settings.getErrors('increment')
 }) }}
+
+{{ forms.textField({
+	label: "Zero Padding"|t,
+	id: 'padding',
+	name: 'padding',
+	instructions: "Insert the number of zeroes you want to pad. E.g. \"4\" will pad your number to 0001, \"5\" to 00001 etc."|t,
+	value: settings.padding,
+	size: 5,
+	errors: settings.getErrors('padding')
+}) }}
