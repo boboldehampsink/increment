@@ -73,7 +73,7 @@ class IncrementFieldType extends BaseFieldType
         $settings = $this->getSettings();
 
         // If value is not yet set
-        if (!isset($value)) {
+        if (!empty($value)) {
 
             // Get current max number
             $value = $this->_getMaxNumber($settings->increment);
