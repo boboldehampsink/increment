@@ -14,5 +14,10 @@ This plugin's idea is derived from the Sprout Incremental Plugin by Barrel Stren
 
 Changelog
 =================
+###0.2###
+- Added the ability to add a prefix to each value, like {id} or {{now.year}}
+- Prevent duplicate values when multiple people create elements at the same time.
+- Added MIT License
+
 ###0.1###
 - Initial push to GitHub
