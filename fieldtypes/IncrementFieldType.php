@@ -76,12 +76,7 @@ class IncrementFieldType extends BaseFieldType
         $value = str_replace(craft()->templates->renderObjectTemplate($settings->prefix, $this->element), '', $value);
 
         // Re-calculate max number
-        $max = craft()->db->createCommand()->select('MAX(`field_'.$this->model->handle.'`)')->from('content')->queryScalar();
-
-        // Current value should by higher than max, otherwise a duplicate element could be created
-        if ($value <= $max) {
-            $value = $max + 1;
-        }
+        $value = $this->_getMaxNumber($value);
 
         // Return value
         return $value;
@@ -106,13 +101,7 @@ class IncrementFieldType extends BaseFieldType
             $handle = $this->model->handle;
 
             // Get current max number
-            $max = craft()->db->createCommand()->select('MAX(`field_'.$handle.'`)')->from('content')->queryScalar();
-
-            // Get increment number
-            $increment = $settings->increment;
-
-            // Determine next number
-            $value = $increment > $max ? $increment : ($max+1);
+            $value = $this->_getMaxNumber($settings->increment);
         }
 
         // Add prefix
@@ -136,5 +125,19 @@ class IncrementFieldType extends BaseFieldType
             'name'  => $name,
             'value' => $value,
         ));
+    }
+
+    /**
+     * Get current max number from db.
+     *
+     * @return string
+     */
+    private function _getMaxNumber($value)
+    {
+        // Get current max number from db
+        $max = craft()->db->createCommand()->select('MAX(`field_'.$this->model->handle.'`)')->from('content')->queryScalar();
+
+        // Check if this is valid or up one
+        return $value > $max ? $value : ($max+1);
     }
 }
