@@ -97,9 +97,6 @@ class IncrementFieldType extends BaseFieldType
         // If value is not yet set
         if (!isset($value)) {
 
-            // Get current field handle
-            $handle = $this->model->handle;
-
             // Get current max number
             $value = $this->_getMaxNumber($settings->increment);
         }
