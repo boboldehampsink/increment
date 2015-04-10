@@ -72,11 +72,19 @@ class IncrementFieldType extends BaseFieldType
         // Get settings
         $settings = $this->getSettings();
 
-        // Save value without prefix
-        $value = str_replace(craft()->templates->renderObjectTemplate($settings->prefix, $this->element), '', $value);
+        // If value is not yet set
+        if (!isset($value)) {
 
-        // Re-calculate max number
-        $value = $this->_getMaxNumber($value);
+            // Get current max number
+            $value = $this->_getMaxNumber($settings->increment);
+        } else {
+
+            // Save value without prefix
+            $value = str_replace(craft()->templates->renderObjectTemplate($settings->prefix, $this->element), '', $value);
+
+            // Re-calculate max number
+            $value = $this->_getMaxNumber($value);
+        }
 
         // Return value
         return $value;
