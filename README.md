@@ -5,6 +5,8 @@ Plugin that automatically ups each increment field by one number.
 
 Features:
 - Able to output the value in the CP and in the Site (no other plugin has this feature)
+- Ability to have the value prefixed with text or variables (like {id} or {{now.year}})
+- This plugin checks if the calculated next value is still unique on save
 
 Important:
 The plugin's folder should be named "increment"
