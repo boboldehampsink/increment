@@ -113,10 +113,10 @@ class IncrementFieldType extends BaseFieldType
 
             // Determine next number
             $value = $increment > $max ? $increment : ($max+1);
-
-            // Add prefix
-            $value = craft()->templates->renderObjectTemplate($settings->prefix, $this->element).$value;
         }
+
+        // Add prefix
+        $value = craft()->templates->renderObjectTemplate($settings->prefix, $this->element).$value;
 
         // Return this value
         return $value;
