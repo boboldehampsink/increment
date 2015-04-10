@@ -1,13 +1,22 @@
 {% import "_includes/forms" as forms %}
 
 {{ forms.textField({
+	label: "Prefix"|t,
+	id: 'prefix',
+	name: 'prefix',
+	instructions: "Insert the prefix you want to use, if any. This can also be a variable like {postDate.year}."|t,
+	value: settings.prefix,
+	autofocus: true,
+	first: true,
+	errors: settings.getErrors('prefix')
+}) }}
+
+{{ forms.textField({
 	label: "Next Number"|t,
 	id: 'increment',
 	name: 'increment',
 	instructions: "Insert the number you want to use for the next incremented value. The number can must be higher than the highest incremented value or Increment will base its next number off of existing highest number."|t,
 	value: settings.increment,
-	autofocus: true,
-	first: true,
 	size: 5,
 	errors: settings.getErrors('increment')
 }) }}

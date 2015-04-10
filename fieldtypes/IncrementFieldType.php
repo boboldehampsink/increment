@@ -1,9 +1,9 @@
 <?php
+
 namespace Craft;
 
 class IncrementFieldType extends BaseFieldType
 {
-
     // Increment name
     public function getName()
     {
@@ -20,6 +20,7 @@ class IncrementFieldType extends BaseFieldType
     protected function defineSettings()
     {
         return array(
+            'prefix'    => AttributeType::String,
             'increment' => AttributeType::Number,
         );
     }
@@ -32,9 +33,30 @@ class IncrementFieldType extends BaseFieldType
         ));
     }
 
+    /**
+     * @inheritDoc IFieldType::prepValueFromPost()
+     *
+     * @param mixed $value
+     *
+     * @return mixed
+     */
+    public function prepValueFromPost($value)
+    {
+        // Get settings
+        $settings = $this->getSettings();
+
+        // Save value without prefix
+        $value = str_replace(craft()->templates->renderObjectTemplate($settings->prefix, $this->element), '', $value);
+
+        // Return value
+        return $value;
+    }
+
     // Prep value for output
     public function prepValue($value)
     {
+        // Get settings
+        $settings = $this->getSettings();
 
         // If value is not yet set
         if (!isset($value)) {
@@ -46,10 +68,13 @@ class IncrementFieldType extends BaseFieldType
             $max = craft()->db->createCommand()->select('MAX(`field_'.$handle.'`)')->from('content')->queryScalar();
 
             // Get increment number
-            $increment = $this->getSettings()->increment;
+            $increment = $settings->increment;
 
             // Determine next number
             $value = $increment > $max ? $increment : ($max+1);
+
+            // Add prefix
+            $value = craft()->templates->renderObjectTemplate($settings->prefix, $this->element).$value;
         }
 
         // Return this value
