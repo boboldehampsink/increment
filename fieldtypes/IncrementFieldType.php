@@ -2,21 +2,44 @@
 
 namespace Craft;
 
+/**
+ * Increment Field Type.
+ *
+ * Number field with automatic incrementing.
+ *
+ * @author    Bob Olde Hampsink <b.oldehampsink@itmundi.nl>
+ * @copyright Copyright (c) 2015, Bob Olde Hampsink
+ * @license   MIT
+ *
+ * @link      http://github.com/boboldehampsink
+ */
 class IncrementFieldType extends BaseFieldType
 {
-    // Increment name
+    /**
+     * Get fieldtype name.
+     *
+     * @return string
+     */
     public function getName()
     {
         return Craft::t('Increment');
     }
 
-    // Define field as number
+    /**
+     * Define fieldtype as number.
+     *
+     * @return string
+     */
     public function defineContentAttribute()
     {
         return AttributeType::Number;
     }
 
-    // Settings
+    /**
+     * Define fieldtype settings.
+     *
+     * @return array
+     */
     protected function defineSettings()
     {
         return array(
@@ -25,7 +48,11 @@ class IncrementFieldType extends BaseFieldType
         );
     }
 
-    // Set settings html
+    /**
+     * Render settings template.
+     *
+     * @return string
+     */
     public function getSettingsHtml()
     {
         return craft()->templates->render('increment/_settings', array(
@@ -34,11 +61,11 @@ class IncrementFieldType extends BaseFieldType
     }
 
     /**
-     * @inheritDoc IFieldType::prepValueFromPost()
+     * Prepares value after posting, removing the prefix and checking if its still unique.
      *
-     * @param mixed $value
+     * @param string $value
      *
-     * @return mixed
+     * @return string
      */
     public function prepValueFromPost($value)
     {
@@ -60,7 +87,13 @@ class IncrementFieldType extends BaseFieldType
         return $value;
     }
 
-    // Prep value for output
+    /**
+     * Prepares value for output, adding the prefix.
+     *
+     * @param string $value
+     *
+     * @return string
+     */
     public function prepValue($value)
     {
         // Get settings
@@ -89,11 +122,16 @@ class IncrementFieldType extends BaseFieldType
         return $value;
     }
 
-    // Set input html
+    /**
+     * Render input template.
+     *
+     * @param string $name
+     * @param string $value
+     *
+     * @return string
+     */
     public function getInputHtml($name, $value)
     {
-
-        // Return html
         return craft()->templates->render('increment/_input', array(
             'name'  => $name,
             'value' => $value,
