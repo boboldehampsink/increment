@@ -48,6 +48,14 @@ class IncrementFieldType extends BaseFieldType
         // Save value without prefix
         $value = str_replace(craft()->templates->renderObjectTemplate($settings->prefix, $this->element), '', $value);
 
+        // Re-calculate max number
+        $max = craft()->db->createCommand()->select('MAX(`field_'.$this->model->handle.'`)')->from('content')->queryScalar();
+
+        // Current value should by higher than max, otherwise a duplicate element could be created
+        if ($value <= $max) {
+            $value = $max + 1;
+        }
+
         // Return value
         return $value;
     }
