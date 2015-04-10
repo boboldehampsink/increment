@@ -26,23 +26,39 @@ class IncrementPlugin extends BasePlugin
 
     public function init()
     {
-        // check increment fields to make sure no duplicate values are inserted
-        craft()->on('entries.beforeSaveEntry', function (Event $event) {
-            $isNewEntry = $event->params['isNewEntry'];
-            $entry = $event->params['entry'];
+        // Check increment fields to make sure no duplicate values are inserted
+        craft()->on('elements.beforeSaveElement', function (Event $event) {
 
-            // exisiting entries don't change, so no need to check
-            if ($isNewEntry) {
-                $fields = $entry->getFieldLayout()->getFields();
+            // Check if this is a new element
+            $isNewElement = $event->params['isNewElement'];
+
+            // Get element
+            $element = $event->params['element'];
+
+            // Exisiting elements don't change, so no need to check
+            if ($isNewElement) {
+
+                // Get element fields
+                $fields = $element->getFieldLayout()->getFields();
+
+                // Loop through element fields
                 foreach ($fields as $field) {
-                    if ($field->getField()->type == 'Increment') {
-                        $handle = $field->getField()->handle;
-                        $max = craft()->db->createCommand()->select('MAX(`field_'.$handle.'`)')->from('content')->queryScalar();
-                        $currentValue = $entry[$handle];
 
-                        // current value should by higher than max, otherwise a duplicate entry could be created
+                    // Get field model
+                    $field = $field->getField();
+
+                    // Check if this field is an Increment field
+                    if ($field->type == $this->getClassHandle()) {
+
+                        // Re-calculate max value
+                        $max = craft()->db->createCommand()->select('MAX(`field_'.$field->handle.'`)')->from('content')->queryScalar();
+
+                        // Get current value
+                        $currentValue = $element->{$field->handle};
+
+                        // Current value should by higher than max, otherwise a duplicate element could be created
                         if ($currentValue <= $max) {
-                            $entry->setContentFromPost(array($handle => $max + 1));
+                            $element->setContentFromPost(array($field->handle => ($max + 1)));
                         }
                     }
                 }
