@@ -106,6 +106,9 @@ class IncrementFieldType extends BaseFieldType
         // If value is not yet set
         if (!isset($value)) {
 
+            // Craft sets postDate for Live Preview. We do the same.
+            $this->element->postDate = new DateTime();
+
             // Get current max number
             $value = $this->_getMaxNumber($settings->increment);
         }
