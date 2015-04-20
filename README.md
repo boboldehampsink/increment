@@ -17,6 +17,9 @@ This plugin's idea is derived from the Sprout Incremental Plugin by Barrel Stren
 
 Changelog
 =================
+###0.2.1###
+- Added the ability to use the then yet non-existing postDate in prefix like in Craft's Live Preview
+
 ###0.2###
 - Added the ability to add a prefix to each value, like {id} or {{now.year}}
 - Added zero padding options
