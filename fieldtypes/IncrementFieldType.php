@@ -73,6 +73,11 @@ class IncrementFieldType extends BaseFieldType
         // Get settings
         $settings = $this->getSettings();
 
+        // Craft sets postDate for Live Preview. We do the same.
+        if (is_null($this->element->postDate)) {
+            $this->element->postDate = new DateTime();
+        }
+
         // If value is not yet set
         if (empty($value)) {
 
