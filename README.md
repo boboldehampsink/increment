@@ -17,6 +17,9 @@ This plugin's idea is derived from the Sprout Incremental Plugin by Barrel Stren
 
 Changelog
 =================
+###0.2.2###
+- Added the ability to control number recalculation on save
+
 ###0.2.1###
 - Added the ability to use the then yet non-existing postDate in prefix like in Craft's Live Preview
 
