@@ -1,32 +1,40 @@
 {% import "_includes/forms" as forms %}
 
-{{ forms.textField({
-	label: "Prefix"|t,
-	id: 'prefix',
-	name: 'prefix',
-	instructions: "Insert the prefix you want to use, if any. This can also be a variable like {postDate.year}."|t,
-	value: settings.prefix,
-	autofocus: true,
-	first: true,
-	errors: settings.getErrors('prefix')
+{{ forms.lightswitchField({
+	label:        "Recalculate on save"|t,
+	id:           'recalculate',
+	name:         'recalculate',
+	instructions: 'Recalculate max number on save. This will make the number always unique.'|t,
+	on:           settings.recalculate,
+	first:        true,
+	errors:       settings.getErrors('recalculate')
 }) }}
 
 {{ forms.textField({
-	label: "Next Number"|t,
-	id: 'increment',
-	name: 'increment',
-	instructions: "Insert the number you want to use for the next incremented value. The number can must be higher than the highest incremented value or Increment will base its next number off of existing highest number."|t,
-	value: settings.increment,
-	size: 5,
-	errors: settings.getErrors('increment')
+	label:        'Prefix'|t,
+	id:           'prefix',
+	name:         'prefix',
+	instructions: 'Insert the prefix you want to use, if any. This can also be a variable like {postDate.year}.'|t,
+	value:        settings.prefix,
+	errors:       settings.getErrors('prefix')
 }) }}
 
 {{ forms.textField({
-	label: "Zero Padding"|t,
-	id: 'padding',
-	name: 'padding',
-	instructions: "Insert the number of zeroes you want to pad. E.g. \"4\" will pad your number to 0001, \"5\" to 00001 etc."|t,
-	value: settings.padding,
-	size: 5,
-	errors: settings.getErrors('padding')
+	label:        'Next Number'|t,
+	id:           'increment',
+	name:         'increment',
+	instructions: 'Insert the number you want to use for the next incremented value. The number can must be higher than the highest incremented value or Increment will base its next number off of existing highest number.'|t,
+	value:        settings.increment,
+	size:         5,
+	errors:       settings.getErrors('increment')
+}) }}
+
+{{ forms.textField({
+	label:        'Zero Padding'|t,
+	id:           'padding',
+	name:         'padding',
+	instructions: 'Insert the number of zeroes you want to pad. E.g. "4" will pad your number to 0001, "5" to 00001 etc.'|t,
+	value:        settings.padding,
+	size:         5,
+	errors:       settings.getErrors('padding')
 }) }}

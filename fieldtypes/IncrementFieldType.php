@@ -43,9 +43,10 @@ class IncrementFieldType extends BaseFieldType
     protected function defineSettings()
     {
         return array(
-            'prefix'    => AttributeType::String,
-            'increment' => AttributeType::Number,
-            'padding'   => AttributeType::Number,
+            'recalculate' => array(AttributeType::Bool, 'default' => true),
+            'prefix'      => AttributeType::String,
+            'increment'   => AttributeType::Number,
+            'padding'     => AttributeType::Number,
         );
     }
 
@@ -89,7 +90,9 @@ class IncrementFieldType extends BaseFieldType
             $value = str_replace(craft()->templates->renderObjectTemplate($settings->prefix, $this->element), '', $value);
 
             // Re-calculate max number
-            $value = $this->_getMaxNumber($value);
+            if ($settings->recalculate) {
+                $value = $this->_getMaxNumber($value);
+            }
         }
 
         // Return value
