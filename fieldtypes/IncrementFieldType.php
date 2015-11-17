@@ -73,7 +73,15 @@ class IncrementFieldType extends BaseFieldType
     {
         $this->setPostDate();
 
-        $value = empty($value) ? $this->_getMaxNumber() : $this->getIncrementNumber($value);
+        // Get settings
+        $settings = $this->getSettings();
+
+        // If value is not yet set
+        if (!isset($value) || ($this->isFresh() && $settings->recalculate)) {
+            $value = $this->_getMaxNumber();
+        } else {
+            $value = $this->getIncrementNumber($value);
+        }
 
         return $value;
     }
@@ -89,13 +97,13 @@ class IncrementFieldType extends BaseFieldType
     {
         $this->setPostDate();
 
+        // Get settings
+        $settings = $this->getSettings();
+
         // If value is not yet set
         if (!isset($value)) {
             $value = $this->_getMaxNumber();
         }
-
-        // Get settings
-        $settings = $this->getSettings();
 
         // Pad zeroes
         $value = str_pad($value, $settings->padding, '0', STR_PAD_LEFT);
@@ -142,7 +150,10 @@ class IncrementFieldType extends BaseFieldType
     private function _getMaxNumber()
     {
         $settings = $this->getSettings();
-        return craft()->increment->getNewIncrement($this->model->handle, $settings->increment);
+        $minValue = $settings->increment;
+        $maxValue = craft()->db->createCommand()->select('MAX(`field_' . $this->model->handle . '`)')->from('content')->queryScalar();
+
+        return $minValue > $maxValue ? $minValue : ($maxValue + 1);
     }
 
     /**

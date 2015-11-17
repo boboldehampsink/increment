@@ -54,21 +54,4 @@ class IncrementPlugin extends BasePlugin
     {
         return 'http://www.itmundi.nl';
     }
-
-    /**
-     * Check number on before save entry
-     */
-    public function init()
-    {
-        craft()->on('entries.beforeSaveEntry', function (Event $event) {
-
-            $isNewEntry = $event->params['isNewEntry'];
-            $entry = $event->params['entry'];
-
-            if($isNewEntry) {
-                craft()->increment->recalculateIncrements($entry);
-            }
-        });
-    }
-
 }
