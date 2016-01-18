@@ -6,6 +6,7 @@ Plugin that automatically ups each increment field by one number.
 Features:
 - Able to output the value in the CP and in the Site (no other plugin has this feature)
 - Ability to have the value prefixed with text or variables (like {id} or {{now.year}})
+- Ability to reset increment yearly
 - Ability to zero pad the value
 - This plugin checks if the calculated next value is still unique on save
 
@@ -17,6 +18,9 @@ This plugin's idea is derived from the Sprout Incremental Plugin by Barrel Stren
 
 Changelog
 =================
+###0.2.3###
+- Added the ability to reset increment yearly
+
 ###0.2.2###
 - Added the ability to control number recalculation on save
 

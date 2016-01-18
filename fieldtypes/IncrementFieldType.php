@@ -45,6 +45,7 @@ class IncrementFieldType extends BaseFieldType
         return array(
             'recalculate' => array(AttributeType::Bool, 'default' => true),
             'prefix'      => AttributeType::String,
+            'yearlyreset' => array(AttributeType::Bool, 'default' => false),
             'increment'   => AttributeType::Number,
             'padding'     => AttributeType::Number,
         );
@@ -151,7 +152,13 @@ class IncrementFieldType extends BaseFieldType
     {
         $settings = $this->getSettings();
         $minValue = $settings->increment;
-        $maxValue = craft()->db->createCommand()->select('MAX(`field_' . $this->model->handle . '`)')->from('content')->queryScalar();
+
+        $query = craft()->db->createCommand()->select('MAX(`field_' . $this->model->handle . '`)')->from('content');
+
+        if($settings->yearlyreset){
+            $query = $query->where('year(dateCreated) = year(CURDATE())');
+        }
+        $maxValue =$query->queryScalar();
 
         return $minValue > $maxValue ? $minValue : ($maxValue + 1);
     }
