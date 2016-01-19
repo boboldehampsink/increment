@@ -32,7 +32,7 @@ class IncrementPlugin extends BasePlugin
      */
     public function getVersion()
     {
-        return '0.2.2';
+        return '0.3.0';
     }
 
     /**
