@@ -19,6 +19,15 @@
 	errors:       settings.getErrors('prefix')
 }) }}
 
+{{ forms.lightswitchField({
+    label:        'Yearly reset'|t,
+    id:           'yearlyreset',
+    name:         'yearlyreset',
+    instructions: 'Reset the increment yearly. This will make the increment start with 1 again at the beginning of each year.'|t,
+    on:           settings.yearlyreset,
+    errors:       settings.getErrors('yearlyreset')
+}) }}
+
 {{ forms.textField({
 	label:        'Next Number'|t,
 	id:           'increment',
