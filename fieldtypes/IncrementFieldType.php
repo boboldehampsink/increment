@@ -45,6 +45,7 @@ class IncrementFieldType extends BaseFieldType
         return array(
             'recalculate' => array(AttributeType::Bool, 'default' => true),
             'prefix'      => AttributeType::String,
+            'yearlyreset' => array(AttributeType::Bool, 'default' => false),
             'increment'   => AttributeType::Number,
             'padding'     => AttributeType::Number,
         );
@@ -71,31 +72,18 @@ class IncrementFieldType extends BaseFieldType
      */
     public function prepValueFromPost($value)
     {
+        $this->setPostDate();
+
         // Get settings
         $settings = $this->getSettings();
 
-        // Craft sets postDate for Live Preview. We do the same.
-        if (is_null($this->element->postDate)) {
-            $this->element->postDate = new DateTime();
-        }
-
         // If value is not yet set
-        if (empty($value)) {
-
-            // Get current max number
-            $value = $this->_getMaxNumber($settings->increment);
+        if (!isset($value) || ($this->isFresh() && $settings->recalculate)) {
+            $value = $this->_getMaxNumber();
         } else {
-
-            // Save value without prefix
-            $value = str_replace(craft()->templates->renderObjectTemplate($settings->prefix, $this->element), '', $value);
-
-            // Re-calculate max number
-            if ($settings->recalculate) {
-                $value = $this->_getMaxNumber($value);
-            }
+            $value = $this->getIncrementNumber($value);
         }
 
-        // Return value
         return $value;
     }
 
@@ -108,17 +96,14 @@ class IncrementFieldType extends BaseFieldType
      */
     public function prepValue($value)
     {
+        $this->setPostDate();
+
         // Get settings
         $settings = $this->getSettings();
 
         // If value is not yet set
         if (!isset($value)) {
-
-            // Craft sets postDate for Live Preview. We do the same.
-            $this->element->postDate = new DateTime();
-
-            // Get current max number
-            $value = $this->_getMaxNumber($settings->increment);
+            $value = $this->_getMaxNumber();
         }
 
         // Pad zeroes
@@ -148,16 +133,43 @@ class IncrementFieldType extends BaseFieldType
     }
 
     /**
+     * Get value without prefix
+     * @param string $value
+     * @return int
+     */
+    public function getIncrementNumber($value)
+    {
+        $settings = $this->getSettings();
+        return (int)str_replace(craft()->templates->renderObjectTemplate($settings->prefix, $this->element), '', $value);
+    }
+
+    /**
      * Get current max number from db.
      *
      * @return string
      */
-    private function _getMaxNumber($value)
+    private function _getMaxNumber()
     {
-        // Get current max number from db
-        $max = craft()->db->createCommand()->select('MAX(`field_'.$this->model->handle.'`)')->from('content')->queryScalar();
+        $settings = $this->getSettings();
+        $minValue = $settings->increment;
 
-        // Check if this is valid or up one
-        return $value > $max ? $value : ($max+1);
+        $query = craft()->db->createCommand()->select('MAX(`field_' . $this->model->handle . '`)')->from('content');
+
+        if($settings->yearlyreset){
+            $query = $query->where('year(dateCreated) = year(CURDATE())');
+        }
+        $maxValue =$query->queryScalar();
+
+        return $minValue > $maxValue ? $minValue : ($maxValue + 1);
+    }
+
+    /**
+     * Craft sets postDate for Live Preview. We do the same.
+     */
+    private function setPostDate()
+    {
+        if (is_null($this->element->postDate)) {
+            $this->element->postDate = new DateTime();
+        }
     }
 }
