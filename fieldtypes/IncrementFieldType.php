@@ -107,7 +107,7 @@ class IncrementFieldType extends BaseFieldType
         }
 
         // Pad zeroes
-        $value = str_pad($value, $settings->padding, '0', STR_PAD_LEFT);
+        $value = str_pad($value, (int) $settings->padding, '0', STR_PAD_LEFT);
 
         // Add prefix
         $value = craft()->templates->renderObjectTemplate($settings->prefix, $this->element).$value;
