@@ -18,6 +18,10 @@ This plugin's idea is derived from the Sprout Incremental Plugin by Barrel Stren
 
 Changelog
 =================
+###0.3.1###
+- Fixed bug where padding was not a number (thanks to @steverowling)
+- Fixed bug where postDate was assumed for all Element Types (thanks to @steverowling)
+
 ###0.3.0###
 - Refactor to only recalculate numbers on save when entry is a new record
 - Added the ability to reset increment yearly
