@@ -107,7 +107,7 @@ class IncrementFieldType extends BaseFieldType
         }
 
         // Pad zeroes
-        $value = str_pad($value, $settings->padding, '0', STR_PAD_LEFT);
+        $value = str_pad($value, (int) $settings->padding, '0', STR_PAD_LEFT);
 
         // Add prefix
         $value = craft()->templates->renderObjectTemplate($settings->prefix, $this->element).$value;
@@ -168,7 +168,7 @@ class IncrementFieldType extends BaseFieldType
      */
     private function setPostDate()
     {
-        if (is_null($this->element->postDate)) {
+        if (($this->element == ElementType::Entry) && is_null($this->element->postDate)) {
             $this->element->postDate = new DateTime();
         }
     }
