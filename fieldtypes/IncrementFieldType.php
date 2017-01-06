@@ -155,8 +155,10 @@ class IncrementFieldType extends BaseFieldType
 
         $query = craft()->db->createCommand()->select('MAX(`field_' . $this->model->handle . '`)')->from('content');
 
-        if($settings->yearlyreset){
-            $query = $query->where('year(dateCreated) = year(CURDATE())');
+        if ($settings->yearlyreset) {
+            $query = $query
+              ->join('entries', 'craft_content.elementId = craft_entries.id')
+              ->where('year(craft_entries.postDate) = year(CURDATE())')
         }
         $maxValue =$query->queryScalar();
 
