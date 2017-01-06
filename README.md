@@ -18,6 +18,9 @@ This plugin's idea is derived from the Sprout Incremental Plugin by Barrel Stren
 
 Changelog
 =================
+###0.3.3###
+- Fixed setting of postDate on fresh entries
+
 ###0.3.2###
 - Fixed bug where yearly reset looked at the wrong date (dateCreated in stead of postDate)
 

@@ -170,7 +170,7 @@ class IncrementFieldType extends BaseFieldType
      */
     private function setPostDate()
     {
-        if (($this->element == ElementType::Entry) && is_null($this->element->postDate)) {
+        if (($this->element instanceof EntryModel) && is_null($this->element->postDate)) {
             $this->element->postDate = new DateTime();
         }
     }
