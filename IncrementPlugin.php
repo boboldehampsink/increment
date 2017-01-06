@@ -32,7 +32,7 @@ class IncrementPlugin extends BasePlugin
      */
     public function getVersion()
     {
-        return '0.3.1';
+        return '0.3.2';
     }
 
     /**
@@ -52,6 +52,6 @@ class IncrementPlugin extends BasePlugin
      */
     public function getDeveloperUrl()
     {
-        return 'http://www.itmundi.nl';
+        return 'http://github.com/boboldehampsink';
     }
 }
