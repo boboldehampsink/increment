@@ -153,14 +153,18 @@ class IncrementFieldType extends BaseFieldType
         $settings = $this->getSettings();
         $minValue = $settings->increment;
 
-        $query = craft()->db->createCommand()->select('MAX(`field_' . $this->model->handle . '`)')->from('content');
+        $query = craft()->db->createCommand()->select('MAX(`field_'.$this->model->handle.'`)')->from('content');
 
         if ($settings->yearlyreset) {
-            $query = $query
-              ->join('entries', 'craft_content.elementId = craft_entries.id')
-              ->where('year(craft_entries.postDate) = year(CURDATE())');
+            if ($this->element instanceof EntryModel) {
+                $query = $query
+                  ->join('entries', 'craft_content.elementId = craft_entries.id')
+                  ->where('year(craft_entries.postDate) = year(CURDATE())');
+            } else {
+                $query = $query->where('year(dateCreated) = year(CURDATE())');
+            }
         }
-        $maxValue =$query->queryScalar();
+        $maxValue = $query->queryScalar();
 
         return $minValue > $maxValue ? $minValue : ($maxValue + 1);
     }

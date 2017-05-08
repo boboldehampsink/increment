@@ -19,6 +19,9 @@ This plugin's idea is derived from the Sprout Incremental Plugin by Barrel Stren
 Changelog
 =================
 ###0.3.3###
+- Fixed yearly reset for non-entry elements
+
+###0.3.3###
 - Fixed setting of postDate on fresh entries
 
 ###0.3.2###
