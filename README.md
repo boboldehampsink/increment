@@ -18,7 +18,7 @@ This plugin's idea is derived from the Sprout Incremental Plugin by Barrel Stren
 
 Changelog
 =================
-###0.3.3###
+###0.3.4###
 - Fixed yearly reset for non-entry elements
 
 ###0.3.3###
