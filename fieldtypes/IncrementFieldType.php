@@ -178,4 +178,14 @@ class IncrementFieldType extends BaseFieldType
             $this->element->postDate = new DateTime();
         }
     }
+    
+    /**
+    * Method to show field in table view of entries list
+    * Should not populate field if it hasn't been explicitly set, i.e. don't show next increment value
+    **/
+    public function getTableAttributeHtml($value)
+    {
+        $maxNumber = $this->_getMaxNumber();
+        return $value < $maxNumber ? $value : null;
+    }
 }
